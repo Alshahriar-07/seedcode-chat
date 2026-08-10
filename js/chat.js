@@ -85,6 +85,13 @@
     renderer.renderHeaderTitle();
     renderer.scrollToBottom(true);
 
+    /* Animate the newest message in without re-animating history. */
+    if (window.SeedChatMotion) {
+      var scroll = document.getElementById("chat-scroll");
+      var listEl = scroll && scroll.querySelector(".message-list");
+      window.SeedChatMotion.animateLatestMessages(listEl, 1);
+    }
+
     generate(conv);
   }
 

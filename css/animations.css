@@ -133,11 +133,20 @@
 
 /* ============================================================
    App intro / splash — shown once per session, then dismissed.
+   The overlay markup lives in each page (id="sc-intro"); js/motion.js
+   orchestrates the timing and removes it from the DOM.
    ============================================================ */
 
 @keyframes sc-intro-logo {
-  0% { opacity: 0; transform: translateY(10px) scale(0.94); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0%   { opacity: 0; transform: translateY(10px) scale(0.82);
+         filter: blur(8px) drop-shadow(0 0 26px var(--brand-glow-strong)); }
+  100% { opacity: 1; transform: translateY(0) scale(1);
+         filter: blur(0) drop-shadow(0 0 26px var(--brand-glow-strong)); }
+}
+
+@keyframes sc-brand-in {
+  0%   { opacity: 0; transform: translateY(12px); letter-spacing: 0.18em; }
+  100% { opacity: 1; transform: translateY(0);   letter-spacing: 0.04em; }
 }
 
 .sc-intro {
@@ -149,12 +158,24 @@
   justify-content: center;
   background: var(--bg);
   opacity: 1;
-  transition: opacity var(--t-slow) var(--ease-out);
+  visibility: visible;
+  transition:
+    opacity 460ms var(--ease-out),
+    transform 460ms var(--ease-out),
+    visibility 460ms;
   pointer-events: none;
 }
 
 .sc-intro.hide {
   opacity: 0;
+  transform: scale(1.02);
+  visibility: hidden;
+}
+
+/* Head marker script adds this when the intro was already shown, so
+   the overlay never flashes on repeat navigation. */
+html.sc-skip-intro .sc-intro {
+  display: none;
 }
 
 .sc-intro-inner {
@@ -166,20 +187,20 @@
 }
 
 .sc-intro-logo {
-  width: 76px;
-  height: auto;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
   margin-bottom: 8px;
-  animation: sc-intro-logo 560ms var(--ease-out) both;
-  filter: drop-shadow(0 0 22px var(--brand-glow-strong));
+  animation: sc-intro-logo 550ms var(--ease-out) 120ms both;
 }
 
 .sc-intro-name {
-  font-size: var(--fs-22);
+  font-size: 1.375rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.04em;
   color: var(--text);
   opacity: 0;
-  animation: sc-fade-up 420ms var(--ease-out) 120ms both;
+  animation: sc-brand-in 360ms var(--ease-out) 420ms both;
 }
 
 .sc-intro-name .accent {
@@ -190,19 +211,73 @@
   font-size: var(--fs-13);
   color: var(--muted);
   opacity: 0;
-  animation: sc-fade-up 420ms var(--ease-out) 220ms both;
+  animation: sc-fade-up 360ms var(--ease-out) 600ms both;
+}
+
+/* ============================================================
+   Main app reveal — sidebar / header / content slide into place
+   as the intro fades out. Scoped so mobile drawer stays intact.
+   ============================================================ */
+
+@media (min-width: 901px) {
+  body.sc-intro-active .sidebar {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+body.sc-intro-active .main-header {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+body.sc-intro-active .main {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+body.sc-intro-active .composer-wrap {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+body.app-ready .main-header,
+body.app-ready .main,
+body.app-ready .composer-wrap {
+  transition: opacity 520ms var(--ease-out), transform 520ms var(--ease-out);
+}
+
+@media (min-width: 901px) {
+  body.app-ready .sidebar {
+    transition: opacity 520ms var(--ease-out), transform 520ms var(--ease-out);
+  }
 }
 
 /* ============================================================
    Page transitions — enter on load, exit before navigating.
    ============================================================ */
 
+@keyframes sc-page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sc-page-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+/* Incoming page (repeat navigation / non-intro loads) */
+html.sc-page-in #app {
+  animation: sc-page-in 320ms var(--ease-out) both;
+}
+
 body.page-enter #app {
-  animation: sc-fade-up 260ms var(--ease-out) both;
+  animation: sc-page-in 320ms var(--ease-out) both;
 }
 
 body.page-exit #app {
-  animation: sc-fade-out 160ms ease-out both;
+  animation: sc-page-out 220ms ease-out both;
 }
 
 /* ============================================================
@@ -226,6 +301,93 @@ body.page-exit #app {
 .welcome > *:nth-child(3) { animation-delay: 150ms; }
 .welcome > *:nth-child(4) { animation-delay: 200ms; }
 
+/* ============================================================
+   Chat messages — new messages animate in; history stays stable.
+   chat.js marks the newest message via
+   SeedChatMotion.animateLatestMessages (adds .msg-anim + --msg-i).
+   ============================================================ */
+
+@keyframes sc-user-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes sc-assistant-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message.msg-anim {
+  animation-name: sc-assistant-in;
+  animation-duration: 320ms;
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: both;
+  animation-delay: calc(var(--msg-i, 0) * 50ms);
+}
+
+.message.msg-anim.user {
+  animation-name: sc-user-in;
+  animation-duration: 250ms;
+}
+
+/* Streaming placeholder reveals once; streamed text stays stable. */
+.message.msg-streaming {
+  animation: sc-assistant-in 340ms var(--ease-out) both;
+}
+
+/* ============================================================
+   Auth / 404 card staggered entrance
+   ============================================================ */
+.auth-card .auth-head {
+  animation: sc-fade-up 300ms var(--ease-out) both;
+}
+
+.auth-card .auth-head > * {
+  animation: sc-fade-up 300ms var(--ease-out) both;
+}
+.auth-card .auth-head > *:nth-child(1) { animation-delay: 40ms; }
+.auth-card .auth-head > *:nth-child(2) { animation-delay: 110ms; }
+.auth-card .auth-head > *:nth-child(3) { animation-delay: 180ms; }
+.auth-card .auth-head > *:nth-child(4) { animation-delay: 250ms; }
+
+.auth-card .auth-form > * {
+  animation: sc-fade-up 280ms var(--ease-out) both;
+}
+.auth-card .auth-form > *:nth-child(1) { animation-delay: 120ms; }
+.auth-card .auth-form > *:nth-child(2) { animation-delay: 170ms; }
+.auth-card .auth-form > *:nth-child(3) { animation-delay: 220ms; }
+.auth-card .auth-form > *:nth-child(4) { animation-delay: 270ms; }
+.auth-card .auth-form > *:nth-child(5) { animation-delay: 320ms; }
+.auth-card .auth-form > *:nth-child(6) { animation-delay: 370ms; }
+.auth-card .auth-form > *:nth-child(7) { animation-delay: 420ms; }
+.auth-card .auth-form > *:nth-child(8) { animation-delay: 470ms; }
+.auth-card .auth-form > *:nth-child(9) { animation-delay: 520ms; }
+.auth-card .auth-form > *:nth-child(10) { animation-delay: 570ms; }
+
+.auth-card .nf-actions {
+  animation: sc-fade-up 300ms var(--ease-out) 320ms both;
+}
+
+.auth-card .auth-head .nf-code {
+  animation: sc-nf-code 420ms var(--ease-out) 120ms both;
+}
+
+@keyframes sc-nf-code {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---- Settings sections fade in on render ---- */
+#settings-body > * {
+  animation: sc-fade-up 260ms var(--ease-out) 40ms both;
+}
+
+/* ---- Send / stop swap ---- */
+.btn-send,
+.btn-stop {
+  animation: sc-fade-in 180ms var(--ease-out);
+}
+
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -245,4 +407,6 @@ body.page-exit #app {
   .seed-load-ico img,
   .seed-load-ico::before,
   .seed-load-ico::after { animation: none !important; }
+
+  .sc-intro { display: none; }
 }

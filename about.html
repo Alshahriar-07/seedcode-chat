@@ -48,8 +48,29 @@
   <link rel="stylesheet" href="css/chat.css" />
   <link rel="stylesheet" href="css/settings.css" />
   <link rel="stylesheet" href="css/pages.css" />
+
+  <script>
+    /* SeedChat motion marker — runs before <body> renders */
+    (function () {
+      var d = document.documentElement;
+      var seen = false;
+      var reduce = false;
+      try { seen = sessionStorage.getItem("seedchat_intro_seen") === "1"; } catch (e) {}
+      try { reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+      d.className += (seen || reduce) ? " sc-skip-intro sc-page-in" : " sc-intro-ready";
+    })();
+  </script>
 </head>
 <body data-page="about">
+  <!-- Startup intro — orchestrated by js/motion.js, removed from DOM after it plays. -->
+  <div class="sc-intro" id="sc-intro" aria-hidden="true">
+    <div class="sc-intro-inner">
+      <img class="sc-intro-logo" src="assets/logo.png" alt="" width="72" height="72" />
+      <div class="sc-intro-name">Seed <span class="accent">Code</span> Chat</div>
+      <div class="sc-intro-tag">A premium general-purpose AI assistant</div>
+    </div>
+  </div>
+
   <div id="app">
 
     <!-- ============ Sidebar (injected by navigation.js) ============ -->
@@ -115,6 +136,7 @@
   <script src="js/settings.js"></script>
   <script src="js/navigation.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/motion.js"></script>
   <script src="js/page-about.js"></script>
 </body>
 </html>
