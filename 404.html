@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Page not found — Seed Code Chat</title>
+  <meta name="description" content="The page you were looking for could not be found." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#09090B" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="icon" type="image/x-icon" href="assets/seedcode.ico" />
+  <link rel="apple-touch-icon" href="assets/seedcode-7.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  </noscript>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+
+  <style>
+    body {
+      background: var(--bg);
+    }
+
+    .nf-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .nf-card {
+      max-width: 420px;
+    }
+
+    .nf-code {
+      font-size: var(--fs-30);
+      color: var(--brand-strong);
+      letter-spacing: 0.04em;
+      font-weight: 800;
+    }
+
+    .nf-title {
+      font-size: var(--fs-18);
+      font-weight: 700;
+      color: var(--text);
+      margin: 2px 0 8px;
+    }
+
+    .nf-text {
+      color: var(--muted);
+      font-size: var(--fs-13);
+      line-height: 1.6;
+    }
+
+    .nf-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body data-page="404">
+  <main class="nf-wrap">
+    <section class="auth-card nf-card" aria-labelledby="nf-title">
+      <div class="auth-head">
+        <img class="auth-logo" src="assets/logo.png" alt="Seed Code logo" />
+        <p class="nf-code">404</p>
+        <h1 class="nf-title" id="nf-title">Page not found</h1>
+        <p class="nf-text">The page you are looking for doesn't exist or has moved.</p>
+      </div>
+      <div class="nf-actions">
+        <a class="btn btn-primary" href="index.html">Back to chat</a>
+        <a class="btn btn-ghost" href="about.html">About Seed Code</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

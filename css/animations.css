@@ -1,0 +1,248 @@
+/* ============================================================
+   Seed Code Chat — Animation
+   Purposeful, subtle, premium. Respects reduced motion.
+   ============================================================ */
+
+@keyframes sc-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sc-fade-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sc-scale-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sc-slide-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes sc-sidebar-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes sc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes sc-caret {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes sc-dot {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+
+@keyframes sc-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sc-live {
+  0%, 100% { box-shadow: 0 0 0 0 var(--brand-glow); }
+  50% { box-shadow: 0 0 0 6px transparent; }
+}
+
+@keyframes sc-shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes seed-breathe {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(10deg) scale(1.06); }
+}
+
+@keyframes seed-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes seed-glow {
+  0%, 100% { opacity: 0.45; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ---- Applied helpers ---- */
+.anim-fade-in { animation: sc-fade-in var(--t-base) ease-out; }
+.anim-fade-up { animation: sc-fade-up var(--t-med) var(--ease-out); }
+.anim-fade-down { animation: sc-fade-down var(--t-base) var(--ease-out); }
+.anim-scale-in { animation: sc-scale-in var(--t-base) var(--ease-out); }
+.anim-slide-in-right { animation: sc-slide-in-right var(--t-base) var(--ease-out); }
+
+/* ---- Loading shimmer skeleton ---- */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 37%, var(--surface-2) 63%);
+  background-size: 400px 100%;
+  animation: sc-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--r-sm);
+}
+
+/* ---- Streaming live indicator ---- */
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-strong);
+  animation: sc-live 1.6s ease-out infinite;
+}
+
+.typing-dots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: sc-dot 1.2s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--brand-dim);
+  border-top-color: var(--brand-strong);
+  border-radius: 50%;
+  animation: sc-spin 0.8s linear infinite;
+}
+
+@keyframes sc-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ============================================================
+   App intro / splash — shown once per session, then dismissed.
+   ============================================================ */
+
+@keyframes sc-intro-logo {
+  0% { opacity: 0; transform: translateY(10px) scale(0.94); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sc-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  opacity: 1;
+  transition: opacity var(--t-slow) var(--ease-out);
+  pointer-events: none;
+}
+
+.sc-intro.hide {
+  opacity: 0;
+}
+
+.sc-intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.sc-intro-logo {
+  width: 76px;
+  height: auto;
+  margin-bottom: 8px;
+  animation: sc-intro-logo 560ms var(--ease-out) both;
+  filter: drop-shadow(0 0 22px var(--brand-glow-strong));
+}
+
+.sc-intro-name {
+  font-size: var(--fs-22);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  opacity: 0;
+  animation: sc-fade-up 420ms var(--ease-out) 120ms both;
+}
+
+.sc-intro-name .accent {
+  color: var(--brand-strong);
+}
+
+.sc-intro-tag {
+  font-size: var(--fs-13);
+  color: var(--muted);
+  opacity: 0;
+  animation: sc-fade-up 420ms var(--ease-out) 220ms both;
+}
+
+/* ============================================================
+   Page transitions — enter on load, exit before navigating.
+   ============================================================ */
+
+body.page-enter #app {
+  animation: sc-fade-up 260ms var(--ease-out) both;
+}
+
+body.page-exit #app {
+  animation: sc-fade-out 160ms ease-out both;
+}
+
+/* ============================================================
+   Load staggers — sidebar nav + welcome screen.
+   ============================================================ */
+
+.sidebar-nav .side-nav-item {
+  animation: sc-fade-up var(--t-med) var(--ease-out) both;
+}
+.sidebar-nav .side-nav-item:nth-child(1) { animation-delay: 40ms; }
+.sidebar-nav .side-nav-item:nth-child(2) { animation-delay: 80ms; }
+.sidebar-nav .side-nav-item:nth-child(3) { animation-delay: 120ms; }
+.sidebar-nav .side-nav-item:nth-child(4) { animation-delay: 160ms; }
+.sidebar-nav .side-nav-item:nth-child(5) { animation-delay: 200ms; }
+
+.welcome > * {
+  animation: sc-fade-up var(--t-med) var(--ease-out) both;
+}
+.welcome > *:nth-child(1) { animation-delay: 50ms; }
+.welcome > *:nth-child(2) { animation-delay: 100ms; }
+.welcome > *:nth-child(3) { animation-delay: 150ms; }
+.welcome > *:nth-child(4) { animation-delay: 200ms; }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .skeleton {
+    animation: none !important;
+    background: var(--surface-3);
+  }
+
+  .typing-dots span { animation: none !important; }
+  .spinner { animation-duration: 1.2s; }
+  .seed-load-ico img,
+  .seed-load-ico::before,
+  .seed-load-ico::after { animation: none !important; }
+}

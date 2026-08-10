@@ -1,0 +1,226 @@
+/* ============================================================
+   Seed Code Chat — Auth callback page
+   -----------------------------------------------------------------
+   Standalone email-confirmation landing page. Reads the Supabase
+   callback payload, exchanges a PKCE `code` for a session when
+   present, and shows clear, actionable states instead of silently
+   redirecting on error.
+   ============================================================ */
+
+.cb-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, var(--brand-glow) 0%, transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+.cb-card {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-3);
+  padding: 40px 32px;
+}
+
+.cb-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin-bottom: 14px;
+}
+
+.cb-title {
+  margin: 0 0 22px;
+  font-size: var(--fs-20);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cb-title .accent {
+  color: var(--brand);
+}
+
+/* ---- Processing state ---- */
+.cb-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  font-size: var(--fs-14);
+  color: var(--text-2);
+}
+
+.cb-status[hidden] {
+  display: none;
+}
+
+.cb-spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--brand);
+  animation: cb-spin 0.8s linear infinite;
+}
+
+@keyframes cb-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Result panel */
+.cb-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  text-align: center;
+}
+
+.cb-content[hidden] {
+  display: none;
+}
+
+.cb-icon {
+  margin: 0 auto;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.cb-icon.ok {
+  color: var(--brand);
+  background: var(--brand-dim);
+}
+
+.cb-icon.warn {
+  color: var(--warning);
+  background: var(--warning-bg);
+}
+
+.cb-icon.bad {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.cb-msg-title {
+  margin: 0;
+  font-size: var(--fs-16);
+  font-weight: 600;
+}
+
+.cb-msg-copy {
+  margin: 0;
+  font-size: var(--fs-14);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.cb-field {
+  position: relative;
+  margin-top: 2px;
+}
+
+.cb-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-14);
+  font-family: inherit;
+  outline: none;
+}
+
+.cb-field input:focus {
+  border-color: var(--brand);
+  box-shadow: var(--shadow-focus);
+}
+
+.cb-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.cb-btn {
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-size: var(--fs-14);
+  font-weight: 600;
+  font-family: inherit;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+
+.cb-btn:hover:not(:disabled) {
+  border-color: var(--brand);
+}
+
+.cb-btn.primary {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  color: #fff;
+}
+
+.cb-btn.primary:hover:not(:disabled) {
+  background: var(--brand-strong);
+  border-color: var(--brand-strong);
+}
+
+.cb-btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.cb-btn.ghost:hover:not(:disabled) {
+  color: var(--text-2);
+}
+
+.cb-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cb-btn .cb-spinner-mini {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: cb-spin 0.8s linear infinite;
+  vertical-align: -2px;
+}
+
+.cb-error {
+  font-size: var(--fs-13);
+  color: var(--danger);
+  margin: 0;
+}
+
+.cb-noscript {
+  font-size: var(--fs-14);
+  color: var(--muted);
+  margin: 18px 0 0;
+}

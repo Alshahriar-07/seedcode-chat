@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#09090B" />
+  <title>Confirming email — Seed Code Chat</title>
+  <link rel="icon" type="image/x-icon" href="../assets/seedcode.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="callback.css" />
+</head>
+<body data-page="auth-callback">
+  <div class="cb-wrap">
+    <div class="cb-card">
+      <img class="cb-logo" src="../assets/logo.png" alt="Seed Code logo" />
+      <h1 class="cb-title">Seed <span class="accent">Code</span> Chat</h1>
+
+      <!-- Status (spinner) shown while processing -->
+      <div class="cb-status" id="cb-status" role="status">
+        <span class="cb-spinner" aria-hidden="true"></span>
+        <span id="cb-status-text">Verifying your email…</span>
+      </div>
+
+      <!-- Result / error panel filled by callback.js -->
+      <div class="cb-content" id="cb-content" hidden></div>
+
+      <noscript>
+        <p class="cb-noscript">Please enable JavaScript to confirm your email address.</p>
+      </noscript>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+  <script src="callback.js"></script>
+</body>
+</html>

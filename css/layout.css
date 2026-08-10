@@ -1,0 +1,566 @@
+/* ============================================================
+   Seed Code Chat — Layout / Shell
+   Sidebar · Header · Main · Composer · Responsive
+   ============================================================ */
+
+#app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-rows: var(--header-h) 1fr auto;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar main"
+    "sidebar composer";
+}
+
+/* ==================== Sidebar ==================== */
+
+.sidebar {
+  grid-area: sidebar;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  z-index: var(--z-drawer);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  color: var(--brand-strong);
+  filter: drop-shadow(0 0 6px var(--brand-glow));
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: var(--fs-16);
+  letter-spacing: -0.02em;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.brand-name .accent {
+  color: var(--brand-strong);
+}
+
+.brand-tag {
+  font-size: var(--fs-11);
+  color: var(--muted);
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 1px 7px;
+  letter-spacing: 0.04em;
+}
+
+.sidebar-actions {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.btn-new-chat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, var(--surface-4), var(--surface-3));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  color: var(--text);
+  font-weight: 600;
+  font-size: var(--fs-14);
+  transition: border-color var(--t-fast), background var(--t-fast),
+    box-shadow var(--t-fast), transform var(--t-fast);
+}
+
+.btn-new-chat:hover {
+  border-color: var(--brand-deep);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-new-chat:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn-new-chat svg {
+  color: var(--brand-strong);
+}
+
+.sidebar-search {
+  position: relative;
+  padding: 0 10px;
+}
+
+.sidebar-search .search-icon {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.sidebar-search input {
+  width: 100%;
+  padding: 9px 12px 9px 38px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--text);
+  font-size: var(--fs-13);
+  transition: border-color var(--t-fast);
+}
+
+.sidebar-search input::placeholder {
+  color: var(--muted-2);
+}
+
+.sidebar-search input:focus {
+  border-color: var(--brand-deep);
+  outline: none;
+}
+
+.conv-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+}
+
+.conv-list-empty {
+  color: var(--muted);
+  font-size: var(--fs-13);
+  text-align: center;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.conv-list-empty svg {
+  color: var(--muted-2);
+  opacity: 0.7;
+}
+
+.conv-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--r-md);
+  color: var(--text-2);
+  font-size: var(--fs-13);
+  text-align: left;
+  transition: background var(--t-fast), color var(--t-fast);
+  min-width: 0;
+}
+
+.conv-item:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.conv-item.active {
+  background: var(--brand-dim);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--brand-deep);
+}
+
+.conv-item .conv-icon {
+  flex: none;
+  color: var(--muted);
+}
+
+.conv-item.active .conv-icon {
+  color: var(--brand-strong);
+}
+
+.conv-item .conv-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conv-item .conv-actions {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+}
+
+.conv-item:hover .conv-actions,
+.conv-item.active .conv-actions {
+  display: flex;
+}
+
+.conv-item .icon-btn {
+  width: 26px;
+  height: 26px;
+}
+
+.sidebar-footer {
+  border-top: 1px solid var(--border);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.provider-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.provider-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted-2);
+  flex: none;
+}
+
+.provider-status .dot.online {
+  background: var(--brand-strong);
+  box-shadow: 0 0 6px var(--brand-glow-strong);
+}
+
+.provider-status .ps-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==================== Header ==================== */
+
+.main-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-width: 0;
+}
+
+.header-menu {
+  display: none;
+}
+
+.header-title {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  font-size: var(--fs-15);
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-title.is-placeholder {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-model {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 320px;
+}
+
+/* ==================== Main ==================== */
+
+.main {
+  grid-area: main;
+  overflow-y: auto;
+  position: relative;
+  min-height: 0;
+  scroll-behavior: smooth;
+}
+
+.chat-scroll {
+  max-width: var(--chat-max-w);
+  margin: 0 auto;
+  padding: 24px 24px 40px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== Composer ==================== */
+
+.composer-wrap {
+  grid-area: composer;
+  position: relative;
+  z-index: 20;
+  padding: 12px 16px 16px;
+  background: linear-gradient(180deg, transparent, var(--bg) 30%);
+}
+
+.composer {
+  max-width: var(--composer-max-w);
+  margin: 0 auto;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-lg);
+  transition: border-color var(--t-base), box-shadow var(--t-base);
+  box-shadow: var(--shadow-2);
+}
+
+.composer:focus-within {
+  border-color: var(--brand-deep);
+  box-shadow: var(--shadow-glow);
+}
+
+.composer .composer-inner {
+  padding: 12px 12px 8px;
+}
+
+.composer textarea {
+  width: 100%;
+  border: none;
+  background: none;
+  resize: none;
+  color: var(--text);
+  font-size: var(--fs-15);
+  line-height: 1.5;
+  min-height: 28px;
+  max-height: 200px;
+  padding: 2px 4px;
+}
+
+.composer textarea::placeholder {
+  color: var(--muted-2);
+}
+
+.composer textarea:focus {
+  outline: none;
+}
+
+.composer-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 4px 8px;
+}
+
+.attach-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 3px 8px;
+  font-size: var(--fs-12);
+  color: var(--text-2);
+  max-width: 220px;
+}
+
+.attach-chip .chip-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attach-chip button {
+  color: var(--muted);
+  display: flex;
+  transition: color var(--t-fast);
+}
+
+.attach-chip button:hover {
+  color: var(--danger);
+}
+
+.composer-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.composer-bar .grow {
+  flex: 1;
+}
+
+.composer-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-left: 4px;
+}
+
+.composer-hint {
+  text-align: center;
+  font-size: var(--fs-11);
+  color: var(--muted-2);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.composer-hint kbd {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* Send button */
+.btn-send {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--brand);
+  color: #062A15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-fast), transform var(--t-fast),
+    box-shadow var(--t-fast), opacity var(--t-fast);
+  box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.4);
+  flex: none;
+}
+
+.btn-send:hover:not(:disabled) {
+  background: var(--brand-strong);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.btn-send:active:not(:disabled) {
+  transform: translateY(0) scale(0.96);
+}
+
+.btn-send:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ==================== Scrim (mobile) ==================== */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: var(--z-scrim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-med);
+}
+
+.scrim.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 900px) {
+  #app {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "main"
+      "composer";
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(84vw, 320px);
+    transform: translateX(-102%);
+    transition: transform var(--t-med) var(--ease-out);
+    box-shadow: var(--shadow-3);
+  }
+
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .header-menu {
+    display: flex;
+  }
+
+  .composer-wrap {
+    padding: 8px 12px 12px;
+  }
+
+  .chat-scroll {
+    padding: 16px 16px 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --header-h: 56px;
+  }
+
+  .header-model .model-btn .model-name {
+    max-width: 120px;
+  }
+
+  .composer-hint {
+    display: none;
+  }
+
+  .composer-bar {
+    gap: 4px;
+  }
+
+  .chat-scroll {
+    padding: 12px 12px 24px;
+  }
+}

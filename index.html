@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Seed Code Chat — Free AI Chat Assistant</title>
+  <meta name="description" content="Seed Code Chat is a fast, modern AI chat assistant powered by multiple AI providers. Chat with AI, explore free models, and get intelligent answers with a clean, interactive experience." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://seedcode-chat.vercel.app/" />
+  <meta name="theme-color" content="#09090B" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Seed Code Chat" />
+  <meta property="og:title" content="Seed Code Chat — Free AI Chat Assistant" />
+  <meta property="og:description" content="Chat with AI, explore free AI models, and get intelligent answers. Seed Code Chat is a fast, modern AI chat assistant and AI coding assistant powered by multiple AI providers." />
+  <meta property="og:url" content="https://seedcode-chat.vercel.app/" />
+  <meta property="og:image" content="https://seedcode-chat.vercel.app/assets/logo.png" />
+  <meta property="og:image:alt" content="Seed Code Chat logo" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Seed Code Chat — Free AI Chat Assistant" />
+  <meta name="twitter:description" content="Chat with AI, explore free AI models, and get intelligent answers. A free AI chatbot and AI coding assistant powered by multiple AI providers." />
+  <meta name="twitter:image" content="https://seedcode-chat.vercel.app/assets/logo.png" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="icon" type="image/x-icon" href="assets/seedcode.ico" />
+  <link rel="apple-touch-icon" href="assets/seedcode-7.png" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Seed Code Chat",
+    "url": "https://seedcode-chat.vercel.app/",
+    "description": "A modern AI chat assistant powered by multiple AI providers."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Seed Code Chat",
+    "url": "https://seedcode-chat.vercel.app/",
+    "description": "A modern AI chat assistant powered by multiple AI providers.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Non-blocking Google Fonts: text paints with system fallback, then swaps. -->
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  </noscript>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+
+  <!-- Welcome hero image paints immediately. -->
+  <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high" />
+</head>
+<body data-page="index">
+  <div id="app">
+
+    <!-- ============ Sidebar (injected by navigation.js) ============ -->
+    <aside class="sidebar" id="sidebar-slot" aria-label="Conversations"></aside>
+
+    <div class="scrim" id="scrim" hidden></div>
+
+    <!-- ============ Header ============ -->
+    <header class="main-header" id="main-header">
+      <button class="icon-btn has-ring header-menu" id="btn-menu" type="button" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <h1 class="header-title" id="header-title">Seed Code Chat</h1>
+
+      <div class="header-right">
+        <div class="header-model">
+          <div class="dropdown" id="model-selector">
+            <button class="model-btn" id="model-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="7" rx="2" />
+                <rect x="3" y="14" width="18" height="7" rx="2" />
+                <path d="M7 6.5h.01M7 17.5h.01" />
+              </svg>
+              <span class="model-name" id="model-btn-name">Loading…</span>
+              <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="icon-btn" id="btn-header-settings" type="button" aria-label="Open settings" data-tooltip="Settings">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============ Main chat area / page area ============ -->
+    <main class="main" id="chat-area" tabindex="-1">
+      <!-- Static, crawlable description. The app replaces it on boot, so
+           it never interferes with the chat UI (it also helps crawlers). -->
+      <div class="chat-scroll" id="chat-scroll">
+        <section class="seo-intro" aria-label="About Seed Code Chat">
+          <h1>Seed Code Chat — Free AI Chat Assistant</h1>
+          <p>Seed Code Chat is a modern AI chat assistant for asking questions, exploring free AI models, coding, and getting intelligent answers.</p>
+        </section>
+      </div>
+      <div class="page-view" id="page-view" hidden>
+        <div class="page-shell" id="page-shell"></div>
+      </div>
+    </main>
+
+    <!-- ============ Composer ============ -->
+    <div class="composer-wrap" id="composer-wrap">
+      <div class="composer" id="composer">
+        <div class="composer-inner">
+          <div class="composer-attachments" id="composer-attachments" hidden></div>
+          <textarea
+            id="composer-input"
+            rows="1"
+            placeholder="Message Seed Code Chat…"
+            aria-label="Message Seed Code Chat"
+          ></textarea>
+        </div>
+        <div class="composer-bar">
+          <div class="composer-tools">
+            <button class="icon-btn" id="btn-attach" type="button" aria-label="Attach a file" data-tooltip="Attach file">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m21.4 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+              </svg>
+            </button>
+          </div>
+          <div class="grow"></div>
+          <div class="dropdown" id="composer-model">
+            <button class="model-btn" id="composer-model-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor"/>
+                <circle cx="12" cy="12" r="4"/>
+              </svg>
+              <span class="model-name" id="composer-model-name">Loading…</span>
+              <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+          <button class="btn-send" id="btn-send" type="button" aria-label="Send message" data-tooltip="Send (Enter)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 19V5M5 12l7-7 7 7" />
+            </svg>
+          </button>
+          <button class="btn-send hidden" id="btn-stop" type="button" aria-label="Stop generating">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="composer-hint">
+        <span><kbd>Enter</kbd> to send · <kbd>Shift</kbd> + <kbd>Enter</kbd> for new line</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Dialogs ============ -->
+  <div class="dialog" id="dialog" hidden role="dialog" aria-modal="true">
+    <div class="dialog-box" id="dialog-box"></div>
+  </div>
+
+  <div class="dialog" id="provider-dialog" hidden role="dialog" aria-modal="true">
+    <div class="dialog-box" id="provider-dialog-box"></div>
+  </div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+  <input type="file" id="file-input" class="visually-hidden" multiple accept=".txt,.md,.json,.js,.ts,.jsx,.tsx,.html,.css,.py,.java,.c,.cpp,.go,.rs,.csv,.log,.yaml,.yml,.xml" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/highlight.js"></script>
+  <script src="js/markdown.js"></script>
+  <script src="js/providers.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

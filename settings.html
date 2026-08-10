@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Seed Code Chat — settings." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#09090B" />
+  <title>Settings — Seed Code Chat</title>
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="icon" type="image/x-icon" href="assets/seedcode.ico" />
+  <link rel="apple-touch-icon" href="assets/seedcode-7.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  </noscript>
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+</head>
+<body data-page="settings">
+  <div id="app">
+
+    <!-- ============ Sidebar (injected by navigation.js) ============ -->
+    <aside class="sidebar" id="sidebar-slot" aria-label="Conversations"></aside>
+
+    <div class="scrim" id="scrim" hidden></div>
+
+    <!-- ============ Header ============ -->
+    <header class="main-header" id="main-header">
+      <button class="icon-btn has-ring header-menu" id="btn-menu" type="button" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <h1 class="header-title" id="header-title">Settings</h1>
+
+      <div class="header-right">
+        <button class="icon-btn" id="btn-header-settings" type="button" aria-label="Open settings" data-tooltip="Settings">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============ Main / page ============ -->
+    <main class="main" id="chat-area" tabindex="-1">
+      <div class="page-view" id="page-view">
+        <div class="page-shell" id="page-shell"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============ Dialogs ============ -->
+  <div class="dialog" id="dialog" hidden role="dialog" aria-modal="true">
+    <div class="dialog-box" id="dialog-box"></div>
+  </div>
+
+  <div class="dialog" id="provider-dialog" hidden role="dialog" aria-modal="true">
+    <div class="dialog-box" id="provider-dialog-box"></div>
+  </div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+  <!-- ============ Scripts ============ -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/highlight.js"></script>
+  <script src="js/markdown.js"></script>
+  <script src="js/providers.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/page-settings.js"></script>
+</body>
+</html>
