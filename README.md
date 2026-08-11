@@ -111,6 +111,7 @@ OPENROUTER_API_KEY_4=your_key_here
 OPENROUTER_API_KEY_5=your_key_here
 OPENROUTER_API_KEY_6=your_key_here
 ---
+```
 # 🔄 API Key Fallback
 ```bash
 KEY 1
@@ -152,7 +153,7 @@ failure
 clean final error
 
 ---
-
+```
 # 🔐 Security
 ```bash
 Browser
@@ -175,4 +176,4 @@ Backend
 Browser
 
 ---
-
+```
