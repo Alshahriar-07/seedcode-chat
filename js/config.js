@@ -21,7 +21,7 @@ window.SeedChatConfig = {
   },
 
   /* Provider adapters registered in providers.js */
-  providerOrder: ["openrouter", "aerolink", "custom"],
+  providerOrder: ["openrouter", "freemodel", "custom"],
 
   /* Static model catalog fallback used when /models cannot be fetched.
      IDs are verified to be broadly available on each gateway. */
