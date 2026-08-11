@@ -14,7 +14,11 @@ window.SeedChatConfig = {
   /* Public/shared default credentials (see New folder/api_key.txt) */
   defaults: {
     openrouter: {
+<<<<<<< HEAD
       apiKey: "OPENROUTER_API_KEY",
+=======
+      apiKey: "OPENROUTER_API_KEY_1",
+>>>>>>> 32867d11ea58653ad31d445386f215529bd92f80
       baseUrl: "https://openrouter.ai/api/v1",
       model: "",
     },
