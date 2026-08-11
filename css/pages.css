@@ -818,6 +818,11 @@ body.page-mode .composer-wrap {
   transition: color var(--t-fast);
 }
 
+.sn-btn .seedcode-logo {
+  width: 16px;
+  height: 16px;
+}
+
 .sn-btn:hover {
   background: var(--surface-2);
   color: var(--text);

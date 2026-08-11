@@ -3,8 +3,8 @@
 /* ============================================================
    Seed Code Chat — GET /api/models
    ------------------------------------------------------------
-   Fetches the OpenRouter model catalog using the current active
-   key (managed by api-key-manager.js).
+   Fetches the OpenRouter model catalog using the current runtime
+   key (managed by keyManager.js).
 
    On a key/quota/rate-limit failure (401/402/403/429) from the
    active key, the handler advances to the NEXT key and returns a
@@ -13,7 +13,7 @@
    Uses global fetch. No external dependencies.
    ============================================================ */
 
-var keyManager = require("./api-key-manager");
+var keyManager = require("./keyManager");
 
 var BASE_URL = "https://openrouter.ai/api/v1";
 

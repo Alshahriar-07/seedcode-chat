@@ -1,0 +1,10 @@
+# Secrets — never commit API keys
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log

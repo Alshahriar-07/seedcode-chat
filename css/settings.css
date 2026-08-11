@@ -158,6 +158,11 @@
   flex: none;
 }
 
+.pc-icon .seedcode-logo {
+  width: 20px;
+  height: 20px;
+}
+
 .provider-card .pc-info {
   flex: 1;
   min-width: 0;

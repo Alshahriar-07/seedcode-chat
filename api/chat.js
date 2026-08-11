@@ -3,20 +3,28 @@
 /* ============================================================
    Seed Code Chat — POST /api/chat
    ------------------------------------------------------------
-   Simple OpenRouter proxy for a single API key.
+   OpenRouter proxy backed by keyManager.js.
 
    Flow:
-     client -> this handler -> getActiveApiKey() -> OpenRouter
+     client -> this handler -> current runtime key -> OpenRouter
              -> stream SSE back to client
 
-   On a key/quota/rate-limit failure (401/402/403/429) from the
-   active key, the handler advances to the NEXT key and returns a
-   clean error. The failed request is NOT retried.
+   On a retryable key/quota/rate/server failure
+   (401/402/403/429/500/502/503/504) BEFORE streaming begins, the
+   handler advances to the NEXT key and retries the SAME request
+   once per key (max 6). After the last key the request fails.
+
+   Normal request/model errors (400/404/422) never switch keys.
+
+   Each request keeps its OWN local retry sequence so concurrent
+   requests never interfere with one another. Once streaming has
+   started, keys are never switched and the stream is never
+   restarted.
 
    Only OpenRouter. Uses global fetch. No external dependencies.
    ============================================================ */
 
-var keyManager = require("./api-key-manager");
+var keyManager = require("./keyManager");
 
 var BASE_URL = "https://openrouter.ai/api/v1";
 
@@ -132,13 +140,12 @@ module.exports = async function chatHandler(req, res) {
     return;
   }
 
-  /* Every normal request uses ONLY the current active key. */
-  var apiKey = keyManager.getActiveApiKey();
-  if (!apiKey) {
+  var keyCount = keyManager.getKeyCount();
+  if (keyCount === 0) {
     sendJson(
       res,
       503,
-      cleanError("All OpenRouter API keys are exhausted. Please try again later.")
+      cleanError("All configured AI API keys are currently unavailable. Please try again later.")
     );
     return;
   }
@@ -148,47 +155,80 @@ module.exports = async function chatHandler(req, res) {
     controller.abort();
   });
 
-  var openRouter;
-  try {
-    openRouter = await fetch(BASE_URL + "/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "text/event-stream",
-        Authorization: "Bearer " + apiKey,
-        "HTTP-Referer": req.headers.origin || "https://seedcodechat.vercel.app",
-        "X-Title": "Seed Code Chat",
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: messages,
-        temperature: typeof body.temperature === "number" ? body.temperature : 0.7,
-        max_tokens: typeof body.max_tokens === "number" ? body.max_tokens : 4096,
-        stream: true,
-        ...(Array.isArray(body.transforms) ? { transforms: body.transforms } : {}),
-      }),
-      signal: controller.signal,
-    });
-  } catch (e) {
-    sendJson(res, 502, cleanError("Could not reach OpenRouter. Please try again."));
-    return;
-  }
+  /* Each request walks its OWN local retry sequence starting from
+     the manager's preferred key. Failure advances ONLY the local
+     sequence, so concurrent requests can never corrupt one another.
+     The preferred key is only re-pointed when a request SUCCEEDS,
+     keeping a working key in place for subsequent requests.
+     At most keyCount attempts (max 6) — no infinite retries. */
+  var slot = keyManager.getActiveSlot();
+  var attempts = 0;
+  var openRouter = null;
 
-  if (!openRouter.ok) {
+  while (attempts < keyCount) {
+    attempts += 1;
+
+    var apiKey = keyManager.getKeyAt(slot);
+
+    try {
+      openRouter = await fetch(BASE_URL + "/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+          Authorization: "Bearer " + apiKey,
+          "HTTP-Referer": req.headers.origin || "https://seedcodechat.vercel.app",
+          "X-Title": "Seed Code Chat",
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          temperature: typeof body.temperature === "number" ? body.temperature : 0.7,
+          max_tokens: typeof body.max_tokens === "number" ? body.max_tokens : 4096,
+          stream: true,
+          ...(Array.isArray(body.transforms) ? { transforms: body.transforms } : {}),
+        }),
+        signal: controller.signal,
+      });
+    } catch (e) {
+      sendJson(res, 502, cleanError("Could not reach OpenRouter. Please try again."));
+      return;
+    }
+
+    if (openRouter.ok) {
+      /* Success: keep this key and adopt it as the runtime preferred
+         key so subsequent requests continue using it. */
+      keyManager.setActiveSlot(slot);
+      break;
+    }
+
     var status = openRouter.status;
     var errorPayload = await openRouter.text().catch(function () {
       return "";
     });
     var message = extractErrorMessage(errorPayload, status);
 
-    /* A key/quota/rate-limit failure on the ACTIVE key advances the
-       active key to the next one. The failed request is NOT retried —
-       the NEXT user request uses the new key. */
-    if (keyManager.isSwitchableStatus(status)) {
-      keyManager.switchToNextApiKey();
+    /* Request/model errors never switch keys — return clean error. */
+    if (!keyManager.isSwitchableStatus(status)) {
+      sendJson(res, status >= 500 && status < 600 ? 502 : status, cleanError(message));
+      return;
     }
 
-    sendJson(res, status >= 500 && status < 600 ? 502 : status, cleanError(message));
+    /* Retryable key/quota/rate/server failure: advance only the
+       local sequence and retry the SAME request with the next key.
+       Streaming has not begun yet, so retrying is safe. */
+    console.log("[AI] OpenRouter key slot failed: " + (slot + 1));
+    slot = (slot + 1) % keyCount;
+    console.log("[AI] Switching to key slot: " + (slot + 1));
+  }
+
+  /* Every configured key failed with retryable API failures. */
+  if (!openRouter || !openRouter.ok) {
+    sendJson(
+      res,
+      503,
+      cleanError("All configured AI API keys are currently unavailable. Please try again later.")
+    );
     return;
   }
 

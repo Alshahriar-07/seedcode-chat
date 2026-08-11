@@ -1,64 +1,178 @@
-# Seed Code Chat — Project Documentation
+# 🌱 Seed Code Chat
 
-Seed Code Chat is a general-purpose AI chat web application inspired by the usability of ChatGPT, Claude, and Gemini, with its own premium animated Seed Code visual identity.
+> A clean, modern and responsive AI chat platform built with Vanilla JavaScript, designed to provide a smooth ChatGPT-style conversational experience with the Seed Code visual identity.
 
-## Core stack
+**Seed Code Chat** is a general-purpose AI assistant for everyday questions, coding, learning, writing, brainstorming and productivity.
 
-- Frontend: HTML5, CSS3, Vanilla JavaScript
-- Backend: lightweight API/proxy layer where required
-- Storage: configurable local/browser storage initially; server database can be added later
-- AI providers:
-  - FreeModel.dev
-  - OpenRouter
-  - AeroLink
-  - User-custom providers/API keys
+It is designed to feel simple for normal users while still providing useful tools and model controls for developers and power users.
 
-## Key product rule
+---
 
-The application should feel like a normal AI assistant, not a developer-only coding tool.
+## ✨ Overview
 
-Users should be able to:
-- Start chats
-- Continue previous chats
-- Select models from lists
-- Attach files where supported
-- Regenerate responses
+Seed Code Chat combines a lightweight frontend with a server-side AI gateway to communicate with AI providers securely.
+
+The application focuses on:
+
+- ⚡ Fast AI responses
+- 💬 Natural conversational experience
+- 🧠 Multiple AI model support
+- 🔐 Secure server-side API handling
+- 👤 User authentication
+- ☁️ Cloud-ready deployment
+- 📱 Mobile + desktop responsive design
+- 🎨 Premium Seed Code UI
+- ✨ Smooth page and response animations
+- 💾 Persistent conversation history
+- ⚙️ Flexible model and generation settings
+
+The goal is simple:
+
+> **Make AI chat powerful without making the interface complicated.**
+
+---
+
+# 🚀 Features
+
+## 💬 AI Chat
+
+Seed Code Chat provides a modern conversational interface similar to popular AI assistants.
+
+Supported functionality includes:
+
+- New conversations
+- Multiple messages per conversation
+- Continuous conversations
+- Streaming AI responses
+- Markdown rendering
+- Code block rendering
+- Syntax highlighting
+- Copy response
 - Copy code
-- Change provider/model from settings
-- Add their own provider/API credentials
-- Configure generation preferences
+- Regenerate response
+- Automatic scrolling
+- Message timestamps
+- Model information
+- Provider information
+- Error handling
 
-No unnecessary manual typing should be required for provider/model configuration. Prefer dropdowns, cards, toggles, radio buttons, segmented controls, searchable selects, and file pickers.
+---
 
-## Default provider fallback
+## 🤖 AI Model Selection
 
-The initial product configuration contains two default API configurations:
+Users can select available AI models directly from the chat interface.
 
-1. FreeModel.dev — primary default
-2. OpenRouter — fallback, restricted to free models
+The model selector is designed around:
 
-When the FreeModel.dev quota/request limit is exhausted or the provider returns a recognized quota/rate-limit failure, the application should automatically attempt the OpenRouter free-model fallback.
+- Searchable/selectable model lists
+- Provider grouping
+- Free model support
+- Model names
+- Model identifiers
+- Model descriptions where available
+- Easy switching between models
 
-The exact API endpoints, authentication scheme, model IDs, quota semantics, and free-model availability must be configurable rather than hard-coded throughout the UI.
+The application should never unnecessarily change the model selected by the user.
 
-## Documentation map
+If a selected model becomes unavailable, the application should report the problem clearly instead of silently changing the user's model.
 
-- `PRD.md` — product requirements
-- `Architecture.md` — system architecture
-- `Design.md` — visual and interaction design
-- `Frontend.md` — HTML/CSS/JS implementation rules
-- `Backend.md` — backend/API gateway rules
-- `Providers.md` — provider abstraction and fallback system
-- `API_KEYS.md` — API key handling and security model
-- `Data_Model.md` — chats, messages, settings and storage
-- `UX_Flows.md` — major user journeys
-- `Components.md` — reusable UI components
-- `Animation.md` — animation and motion rules
-- `Accessibility.md` — accessibility requirements
-- `Performance.md` — performance requirements
-- `Error_Handling.md` — error and fallback behavior
-- `Testing.md` — testing strategy
-- `Security.md` — security requirements
-- `Roadmap.md` — implementation phases
-- `Rules.md` — non-negotiable project rules
-- `Memory.md` — persistent project decisions for AI coding agents
+---
+
+# 🌐 AI Providers
+
+Seed Code Chat is designed around a provider-based architecture.
+
+Currently supported or planned providers may include:
+
+- OpenRouter
+- FreeModel.dev
+- AeroLink
+- Other compatible providers
+
+Provider configuration should remain isolated from the main UI.
+
+The frontend should not contain provider secrets.
+
+---
+
+# 🔑 OpenRouter API System
+
+OpenRouter is used as one of the primary AI gateways.
+
+The backend can support multiple OpenRouter API keys.
+
+Example environment configuration:
+
+```env
+OPENROUTER_API_KEY_1=your_key_here
+OPENROUTER_API_KEY_2=your_key_here
+OPENROUTER_API_KEY_3=your_key_here
+OPENROUTER_API_KEY_4=your_key_here
+OPENROUTER_API_KEY_5=your_key_here
+OPENROUTER_API_KEY_6=your_key_here
+---
+# 🔄 API Key Fallback
+```bash
+KEY 1
+  ↓
+success → return response
+
+failure
+  ↓
+KEY 2
+  ↓
+success → return response
+
+failure
+  ↓
+KEY 3
+  ↓
+success → return response
+
+failure
+  ↓
+KEY 4
+  ↓
+success → return response
+
+failure
+  ↓
+KEY 5
+  ↓
+success → return response
+
+failure
+  ↓
+KEY 6
+  ↓
+success → return response
+
+failure
+  ↓
+clean final error
+
+---
+
+# 🔐 Security
+```bash
+Browser
+   │
+   │ POST /api/chat
+   ▼
+Seed Code Backend
+   │
+   │ Server-side API key
+   ▼
+AI Provider
+   │
+   ▼
+AI Response
+   │
+   ▼
+Backend
+   │
+   ▼
+Browser
+
+---
+

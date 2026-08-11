@@ -76,6 +76,12 @@
   margin-top: 1px;
 }
 
+.suggestion .seedcode-logo {
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
 .suggestion .s-t {
   font-weight: 600;
   color: var(--text);
@@ -159,6 +165,14 @@
   justify-content: space-between;
 }
 
+.seedcode-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+  flex: none;
+}
+
 .msg-avatar {
   width: 26px;
   height: 26px;
@@ -170,6 +184,11 @@
   border: 1px solid rgba(46, 204, 113, 0.3);
   color: var(--brand-strong);
   flex: none;
+}
+
+.msg-avatar .seedcode-logo {
+  width: 16px;
+  height: 16px;
 }
 
 .msg-avatar.user {
